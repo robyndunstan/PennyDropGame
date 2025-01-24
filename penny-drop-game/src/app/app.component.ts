@@ -4,10 +4,11 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faDiceTwo } from '@fortawesome/free-solid-svg-icons';
 import { DiceComponent } from "./dice/dice.component";
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { PlayerComponent } from "./player/player.component";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, FontAwesomeModule, DiceComponent, MatSlideToggleModule],
+  imports: [RouterOutlet, FontAwesomeModule, DiceComponent, MatSlideToggleModule, PlayerComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
