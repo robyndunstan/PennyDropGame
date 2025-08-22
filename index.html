@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Penny Drop Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🪙 Penny Drop Game 🎲</h1>
+            <p class="subtitle">First to run out of pennies wins!</p>
+        </header>
+
+        <!-- Game Setup -->
+        <div id="setup" class="section">
+            <h2>Game Setup</h2>
+            <div class="player-setup">
+                <label for="playerCount">Number of Players (2-6):</label>
+                <select id="playerCount" onchange="updatePlayerInputs()">
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4" selected>4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                </select>
+            </div>
+            
+            <div id="playerInputs" class="player-inputs">
+                <!-- Player name inputs will be generated here -->
+            </div>
+            
+            <button id="startGame" onclick="startGame()">Start Game</button>
+        </div>
+
+        <!-- Game Board -->
+        <div id="gameBoard" class="section hidden">
+            <div class="game-info">
+                <div class="current-player">
+                    <h3>Current Player: <span id="currentPlayerName"></span></h3>
+                    <p>Pennies: <span id="currentPlayerPennies"></span></p>
+                </div>
+                
+                <div class="game-status">
+                    <p id="gameMessage">Roll the die to start your turn!</p>
+                </div>
+            </div>
+
+            <!-- The Box (slots) -->
+            <div class="box-container">
+                <h3>The Box</h3>
+                <div class="slots">
+                    <div class="slot" data-slot="1">
+                        <div class="slot-label">1</div>
+                        <div class="slot-content" id="slot1"></div>
+                    </div>
+                    <div class="slot" data-slot="2">
+                        <div class="slot-label">2</div>
+                        <div class="slot-content" id="slot2"></div>
+                    </div>
+                    <div class="slot" data-slot="3">
+                        <div class="slot-label">3</div>
+                        <div class="slot-content" id="slot3"></div>
+                    </div>
+                    <div class="slot" data-slot="4">
+                        <div class="slot-label">4</div>
+                        <div class="slot-content" id="slot4"></div>
+                    </div>
+                    <div class="slot" data-slot="5">
+                        <div class="slot-label">5</div>
+                        <div class="slot-content" id="slot5"></div>
+                    </div>
+                    <div class="slot drop-slot" data-slot="6">
+                        <div class="slot-label">6</div>
+                        <div class="slot-content">
+                            <div class="drop-hole">📦</div>
+                            <div class="dropped-count">Dropped: <span id="droppedCount">0</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Die and Controls -->
+            <div class="controls">
+                <div class="die-container">
+                    <div id="die" class="die">🎲</div>
+                </div>
+                
+                <div class="action-buttons" id="actionButtons">
+                    <button id="rollAgain" onclick="rollAgain()" style="display: none">Roll Again</button>
+                    <button id="endTurn" onclick="endTurn()" style="display: none">End Turn</button>
+                    <button id="rollDie" onclick="rollDie()">Roll Die</button>
+                </div>
+            </div>
+
+            <!-- Players Status -->
+            <div class="players-status">
+                <h3>Players</h3>
+                <div id="playersList"></div>
+            </div>
+        </div>
+
+        <!-- Game Over -->
+        <div id="gameOver" class="section hidden">
+            <h2>🎉 Game Over! 🎉</h2>
+            <p id="winnerMessage"></p>
+            <button onclick="resetGame()">Play Again</button>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>

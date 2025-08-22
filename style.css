@@ -1,0 +1,385 @@
+/* Reset and base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+    color: #333;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    overflow: hidden;
+}
+
+header {
+    background: linear-gradient(45deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+    text-align: center;
+    padding: 30px;
+}
+
+header h1 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.subtitle {
+    font-size: 1.2em;
+    opacity: 0.9;
+}
+
+/* Section styles */
+.section {
+    padding: 30px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Setup section */
+.player-setup {
+    margin-bottom: 20px;
+}
+
+.player-setup label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.player-setup select {
+    padding: 10px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    width: 200px;
+}
+
+.player-inputs {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.player-input {
+    display: flex;
+    flex-direction: column;
+}
+
+.player-input label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+.player-input input {
+    padding: 10px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+.player-input input:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+/* Game board */
+.game-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 30px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 10px;
+}
+
+.current-player h3 {
+    color: #667eea;
+    font-size: 1.4em;
+}
+
+.current-player p {
+    font-size: 1.2em;
+    margin-top: 5px;
+}
+
+.game-status {
+    text-align: right;
+}
+
+#gameMessage {
+    font-size: 1.1em;
+    color: #555;
+    font-weight: 500;
+}
+
+/* Box and slots */
+.box-container {
+    margin-bottom: 30px;
+}
+
+.box-container h3 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.5em;
+    color: #333;
+}
+
+.slots {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 15px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.slot {
+    background: #fff;
+    border: 3px solid #ddd;
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+    transition: all 0.3s;
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+}
+
+.slot:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.slot-label {
+    font-weight: bold;
+    font-size: 1.2em;
+    color: #667eea;
+    margin-bottom: 10px;
+}
+
+.slot-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.drop-slot {
+    background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+    border-color: #ff6b9d;
+}
+
+.drop-hole {
+    font-size: 2em;
+    margin-bottom: 10px;
+}
+
+.dropped-count {
+    font-size: 0.9em;
+    color: #666;
+}
+
+.penny {
+    width: 30px;
+    height: 30px;
+    background: linear-gradient(45deg, #cd7f32, #ffa500);
+    border-radius: 50%;
+    margin: 2px;
+    display: inline-block;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    border: 2px solid #8b4513;
+}
+
+/* Controls */
+.controls {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 30px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 10px;
+}
+
+.die-container {
+    text-align: center;
+}
+
+.die {
+    font-size: 4em;
+    margin-bottom: 15px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    transition: transform 0.3s;
+}
+
+.die.rolling {
+    animation: roll 0.5s ease-in-out;
+}
+
+@keyframes roll {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(90deg); }
+    50% { transform: rotate(180deg); }
+    75% { transform: rotate(270deg); }
+}
+
+.action-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+/* Buttons */
+button {
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: 600;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+#startGame {
+    background: linear-gradient(45deg, #4CAF50, #45a049);
+    font-size: 18px;
+    padding: 15px 30px;
+    margin-top: 20px;
+}
+
+#rollAgain {
+    background: linear-gradient(45deg, #2196F3, #1976D2);
+}
+
+#endTurn {
+    background: linear-gradient(45deg, #ff9800, #f57c00);
+}
+
+/* Players status */
+.players-status h3 {
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.player-status {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    background: #f0f0f0;
+    border-radius: 8px;
+    transition: background-color 0.3s;
+}
+
+.player-status.current {
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    color: white;
+    transform: scale(1.02);
+}
+
+.player-name {
+    font-weight: bold;
+}
+
+.player-pennies {
+    font-size: 1.1em;
+}
+
+/* Game Over */
+#gameOver {
+    text-align: center;
+}
+
+#gameOver h2 {
+    color: #4CAF50;
+    font-size: 2.5em;
+    margin-bottom: 20px;
+}
+
+#winnerMessage {
+    font-size: 1.3em;
+    margin-bottom: 30px;
+    color: #555;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .slots {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .game-info {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+    
+    .controls {
+        flex-direction: column;
+    }
+    
+    .action-buttons {
+        justify-content: center;
+    }
+    
+    header h1 {
+        font-size: 2em;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        margin: 10px;
+        border-radius: 10px;
+    }
+    
+    .section {
+        padding: 20px;
+    }
+    
+    .slots {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+    
+    .slot {
+        min-height: 100px;
+        padding: 10px;
+    }
+}
