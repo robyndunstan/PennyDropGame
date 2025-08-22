@@ -151,6 +151,11 @@ function processRoll(roll) {
             updateGameMessage(`${currentPlayer.name} rolled a ${roll}! Slot ${roll} was filled. Collected ${collectedPennies} pennies from all slots. Turn ends.`);
             gameState.canRollAgain = false;
             
+            // Hide all buttons during transition
+            document.getElementById('rollAgain').style.display = 'none';
+            document.getElementById('endTurn').style.display = 'none';
+            document.getElementById('rollDie').style.display = 'none';
+            
             setTimeout(() => {
                 nextPlayer();
             }, 2000);
@@ -190,6 +195,12 @@ function nextPlayer() {
     gameState.canRollAgain = false;
     updateDisplay();
     updateGameMessage(`${gameState.players[gameState.currentPlayerIndex].name}'s turn. Roll the die!`);
+    
+    // Show only the roll die button for the new player
+    document.getElementById('rollAgain').style.display = 'none';
+    document.getElementById('endTurn').style.display = 'none';
+    document.getElementById('rollDie').style.display = 'block';
+    document.getElementById('rollDie').disabled = false;
 }
 
 // Update the display
