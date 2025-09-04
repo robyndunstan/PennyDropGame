@@ -180,7 +180,8 @@ function hideActionButtons() {
 // Roll again
 function rollAgain() {
     hideActionButtons();
-    updateGameMessage("Roll the die again!");
+    updateGameMessage("Rolling again...");
+    rollDie();
 }
 
 // End turn
