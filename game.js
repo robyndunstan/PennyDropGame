@@ -40,12 +40,17 @@ function startGame() {
     const playerCount = parseInt(document.getElementById('playerCount').value);
     const players = [];
     
-    // Collect player names
+    // Collect player names and types
     for (let i = 1; i <= playerCount; i++) {
         const name = document.getElementById(`player${i}`).value.trim() || `Player ${i}`;
+        const isAI = document.getElementById(`player${i}AI`) ? document.getElementById(`player${i}AI`).checked : false;
+        const aiDifficulty = document.getElementById(`player${i}Difficulty`) ? document.getElementById(`player${i}Difficulty`).value : 'easy';
+        
         players.push({
             name: name,
-            pennies: 12
+            pennies: 12,
+            isAI: isAI,
+            aiDifficulty: aiDifficulty
         });
     }
     
@@ -65,6 +70,115 @@ function startGame() {
     // Update display
     updateDisplay();
     updateGameMessage("Roll the die to start your turn!");
+}
+
+// Update player input fields based on selected number of players
+function updatePlayerInputs() {
+    const playerCount = parseInt(document.getElementById('playerCount').value);
+    const playerInputsContainer = document.getElementById('playerInputs');
+    
+    playerInputsContainer.innerHTML = '';
+    
+    for (let i = 1; i <= playerCount; i++) {
+        const playerDiv = document.createElement('div');
+        playerDiv.className = 'player-input';
+        
+        // First player is always human
+        if (i === 1) {
+            playerDiv.innerHTML = `
+                <label for="player${i}">Player ${i} Name:</label>
+                <input type="text" id="player${i}" placeholder="Enter name" value="Player ${i}">
+            `;
+        } else {
+            playerDiv.innerHTML = `
+                <label for="player${i}">Player ${i} Name:</label>
+                <input type="text" id="player${i}" placeholder="Enter name" value="Player ${i}">
+                <div class="ai-controls">
+                    <label>
+                        <input type="checkbox" id="player${i}AI" onchange="toggleAIOptions(${i})"> AI Player
+                    </label>
+                    <select id="player${i}Difficulty" style="display: none;">
+                        <option value="easy">Easy (Always rolls again)</option>
+                        <option value="medium">Medium (Stops at 3 pennies on board)</option>
+                        <option value="hard">Hard (Stops at 2 pennies on board)</option>
+                    </select>
+                </div>
+            `;
+        }
+        playerInputsContainer.appendChild(playerDiv);
+    }
+}
+
+// Toggle AI difficulty selector
+function toggleAIOptions(playerNumber) {
+    const aiCheckbox = document.getElementById(`player${playerNumber}AI`);
+    const difficultySelect = document.getElementById(`player${playerNumber}Difficulty`);
+    const nameInput = document.getElementById(`player${playerNumber}`);
+    
+    if (aiCheckbox.checked) {
+        difficultySelect.style.display = 'block';
+        updateAIName(playerNumber);
+        
+        // Add event listener to update name when difficulty changes
+        difficultySelect.onchange = () => updateAIName(playerNumber);
+    } else {
+        difficultySelect.style.display = 'none';
+        difficultySelect.onchange = null; // Remove event listener
+        nameInput.value = `Player ${playerNumber}`;
+    }
+}
+
+// Update AI player name based on difficulty and player number
+function updateAIName(playerNumber) {
+    const difficultySelect = document.getElementById(`player${playerNumber}Difficulty`);
+    const nameInput = document.getElementById(`player${playerNumber}`);
+    const difficulty = difficultySelect.value;
+    
+    // Capitalize first letter of difficulty
+    const capitalizedDifficulty = difficulty.charAt(0).toUpperCase() + difficulty.slice(1);
+    nameInput.value = `AI ${capitalizedDifficulty} ${playerNumber}`;
+}
+
+// AI decision making
+function makeAIDecision(player) {
+    const penniesOnBoard = gameState.slots.filter(slot => slot !== null).length;
+    
+    switch (player.aiDifficulty) {
+        case 'easy':
+            return true; // Always roll again
+        case 'medium':
+            return penniesOnBoard < 3; // Stop if 3+ pennies on board
+        case 'hard':
+            return penniesOnBoard < 2; // Stop if 2+ pennies on board
+        default:
+            return true;
+    }
+}
+
+// Handle AI turn
+function handleAITurn() {
+    const currentPlayer = gameState.players[gameState.currentPlayerIndex];
+    
+    if (!currentPlayer.isAI || !gameState.canRollAgain) {
+        return;
+    }
+    
+    // AI makes decision after a short delay for realism
+    setTimeout(() => {
+        const shouldRollAgain = makeAIDecision(currentPlayer);
+        
+        if (shouldRollAgain) {
+            updateGameMessage(`${currentPlayer.name} decides to roll again...`);
+            setTimeout(() => {
+                rollAgain();
+            }, 1000);
+        } else {
+            updateGameMessage(`${currentPlayer.name} decides to end their turn.`);
+            setTimeout(() => {
+                endTurn();
+            }, 1500);
+        }
+    }, 1500);
 }
 
 // Roll the die
@@ -163,11 +277,19 @@ function processRoll(roll) {
     }
 }
 
-// Show action buttons (roll again / end turn)
+// Show action buttons (roll again / end turn) - updated for AI
 function showActionButtons() {
-    document.getElementById('rollAgain').style.display = 'block';
-    document.getElementById('endTurn').style.display = 'block';
-    document.getElementById('rollDie').style.display = 'none';
+    const currentPlayer = gameState.players[gameState.currentPlayerIndex];
+    
+    if (currentPlayer.isAI) {
+        // For AI players, don't show buttons but handle turn automatically
+        handleAITurn();
+    } else {
+        // For human players, show the buttons
+        document.getElementById('rollAgain').style.display = 'block';
+        document.getElementById('endTurn').style.display = 'block';
+        document.getElementById('rollDie').style.display = 'none';
+    }
 }
 
 // Hide action buttons
@@ -190,18 +312,29 @@ function endTurn() {
     nextPlayer();
 }
 
-// Move to next player
+// Move to next player - updated for AI
 function nextPlayer() {
     gameState.currentPlayerIndex = (gameState.currentPlayerIndex + 1) % gameState.players.length;
     gameState.canRollAgain = false;
     updateDisplay();
-    updateGameMessage(`${gameState.players[gameState.currentPlayerIndex].name}'s turn. Roll the die!`);
+    
+    const currentPlayer = gameState.players[gameState.currentPlayerIndex];
+    updateGameMessage(`${currentPlayer.name}'s turn. Roll the die!`);
     
     // Show only the roll die button for the new player
     document.getElementById('rollAgain').style.display = 'none';
     document.getElementById('endTurn').style.display = 'none';
     document.getElementById('rollDie').style.display = 'block';
-    document.getElementById('rollDie').disabled = false;
+    
+    // Only enable the button for human players
+    if (currentPlayer.isAI) {
+        document.getElementById('rollDie').disabled = true;
+        setTimeout(() => {
+            rollDie();
+        }, 1500);
+    } else {
+        document.getElementById('rollDie').disabled = false;
+    }
 }
 
 // Update the display

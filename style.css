@@ -339,6 +339,26 @@ button:disabled {
     color: #555;
 }
 
+.ai-controls {
+    margin-top: 8px;
+    font-size: 0.9em;
+}
+
+.ai-controls label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 5px;
+}
+
+.ai-controls select {
+    padding: 4px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: white;
+    margin-top: 5px;
+}
+
 /* Responsive design */
 @media (max-width: 768px) {
     .slots {
